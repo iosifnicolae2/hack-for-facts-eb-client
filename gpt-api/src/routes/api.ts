@@ -4,6 +4,17 @@ import {
   SearchResponseSchema,
   EntityDataResponseSchema,
   HeatmapResponseSchema,
+  HeatmapCountyResponseSchema,
+  RankingsResponseSchema,
+  AggregatedLineItemsResponseSchema,
+  LineItemsResponseSchema,
+  CommitmentsLineItemsResponseSchema,
+  ClassificationsResponseSchema,
+  InsContextsResponseSchema,
+  InsDatasetsResponseSchema,
+  InsObservationsResponseSchema,
+  InsDatasetDetailsSchema,
+  InsDimensionValuesResponseSchema,
   INCLUDE_SECTIONS,
   DEFAULT_INCLUDES,
   type EntityDataResponse,
@@ -20,9 +31,22 @@ import {
   COMMITMENTS_AGGREGATED_QUERY,
   COMMITMENTS_ANALYTICS_QUERY,
   COMMITMENT_VS_EXECUTION_QUERY,
+  COMMITMENTS_LINE_ITEMS_QUERY,
   EXECUTION_ANALYTICS_QUERY,
   HEATMAP_UAT_DATA_QUERY,
+  HEATMAP_COUNTY_DATA_QUERY,
+  ENTITY_ANALYTICS_QUERY,
+  AGGREGATED_LINE_ITEMS_QUERY,
+  EXECUTION_LINE_ITEMS_QUERY,
+  ALL_FUNCTIONAL_CLASSIFICATIONS_QUERY,
+  ALL_ECONOMIC_CLASSIFICATIONS_QUERY,
+  BUDGET_SECTORS_QUERY,
+  FUNDING_SOURCES_QUERY,
   INS_OBSERVATIONS_QUERY,
+  INS_CONTEXTS_QUERY,
+  INS_DATASETS_QUERY,
+  INS_DATASET_DETAILS_QUERY,
+  INS_DATASET_DIMENSION_VALUES_QUERY,
 } from '../queries.js'
 
 type SearchResponse = z.infer<typeof SearchResponseSchema>
@@ -511,6 +535,596 @@ app.openapi(heatmapRoute, async (c) => {
   )
 
   return c.json({ data: data.heatmapUATData }, 200)
+})
+
+// ── GET /heatmap/counties ──
+
+const heatmapCountiesRoute = createRoute({
+  method: 'get',
+  path: '/heatmap/counties',
+  operationId: 'getHeatmapCountyData',
+  tags: ['Heatmap'],
+  summary: 'Get per-capita spending data aggregated by county',
+  description: 'Returns per-capita spending data aggregated at the county (judet) level. Useful for county-level comparisons across Romania.',
+  request: {
+    query: z.object({
+      year: z.string().optional().openapi({ description: 'Budget year. Default: previous year.', example: '2025' }),
+      report_type: z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED']).optional().default('PRINCIPAL_AGGREGATED'),
+      currency: z.enum(['RON', 'EUR']).optional().default('RON'),
+      inflation_adjusted: z.coerce.boolean().optional().default(false),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: HeatmapCountyResponseSchema } },
+      description: 'Per-capita spending data by county.',
+    },
+  },
+})
+
+app.openapi(heatmapCountiesRoute, async (c) => {
+  const q = c.req.valid('query')
+  const year = q.year ?? String(new Date().getFullYear() - 1)
+
+  const data = await gql<{ heatmapCountyData: Record<string, unknown>[] }>(
+    HEATMAP_COUNTY_DATA_QUERY,
+    {
+      filter: {
+        report_period: buildReportPeriod(year, 'YEAR'),
+        account_category: 'ch',
+        normalization: 'per_capita',
+        currency: q.currency ?? 'RON',
+        inflation_adjusted: q.inflation_adjusted ?? false,
+        report_type: q.report_type ?? 'PRINCIPAL_AGGREGATED',
+        show_period_growth: false,
+        exclude: { economic_prefixes: ['51.01', '51.02'] },
+      },
+    },
+  )
+
+  return c.json({ data: data.heatmapCountyData } as z.infer<typeof HeatmapCountyResponseSchema>, 200)
+})
+
+// ── GET /rankings ──
+
+const rankingsRoute = createRoute({
+  method: 'get',
+  path: '/rankings',
+  operationId: 'getEntityRankings',
+  tags: ['Rankings'],
+  summary: 'Rank entities by budget spending or income',
+  description: 'Get a ranked list of entities by total spending (or income). Supports filtering by county, entity type, functional category, and more. Useful for "top spenders" type queries.',
+  request: {
+    query: z.object({
+      year: z.string().optional().openapi({ description: 'Budget year. Default: previous year.', example: '2025' }),
+      account_category: z.enum(['ch', 'vn']).optional().default('ch').openapi({ description: '"ch" = expenses, "vn" = income. Default: ch.' }),
+      report_type: z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED']).optional().default('PRINCIPAL_AGGREGATED'),
+      normalization: z.enum(['total', 'per_capita']).optional().default('total'),
+      currency: z.enum(['RON', 'EUR']).optional().default('RON'),
+      inflation_adjusted: z.coerce.boolean().optional().default(false),
+      county_codes: z.string().optional().openapi({ description: 'Comma-separated county codes (e.g. "CJ,BV,TM")' }),
+      entity_types: z.string().optional().openapi({ description: 'Comma-separated entity types' }),
+      functional_prefixes: z.string().optional().openapi({ description: 'Comma-separated functional classification prefixes (e.g. "65,68")' }),
+      is_uat: z.coerce.boolean().optional().openapi({ description: 'Filter to UATs only' }),
+      sort_by: z.enum(['amount', 'per_capita_amount', 'total_amount']).optional().default('amount'),
+      sort_order: z.enum(['ASC', 'DESC']).optional().default('DESC'),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(50),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: RankingsResponseSchema } },
+      description: 'Ranked list of entities with spending data.',
+    },
+  },
+})
+
+app.openapi(rankingsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const year = q.year ?? String(new Date().getFullYear() - 1)
+
+  const filter: Record<string, unknown> = {
+    report_period: buildReportPeriod(year, 'YEAR'),
+    account_category: q.account_category ?? 'ch',
+    report_type: q.report_type ?? 'PRINCIPAL_AGGREGATED',
+    normalization: q.normalization ?? 'total',
+    currency: q.currency ?? 'RON',
+    inflation_adjusted: q.inflation_adjusted ?? false,
+    exclude: { economic_prefixes: ['51.01', '51.02'] },
+  }
+
+  if (q.county_codes) filter.county_codes = q.county_codes.split(',').map((s) => s.trim())
+  if (q.entity_types) filter.entity_types = q.entity_types.split(',').map((s) => s.trim())
+  if (q.functional_prefixes) filter.functional_prefixes = q.functional_prefixes.split(',').map((s) => s.trim())
+  if (q.is_uat !== undefined) filter.is_uat = q.is_uat
+
+  const data = await gql<{ entityAnalytics: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    ENTITY_ANALYTICS_QUERY,
+    {
+      filter,
+      sort: { by: q.sort_by ?? 'amount', order: q.sort_order ?? 'DESC' },
+      limit: q.limit ?? 50,
+      offset: q.offset ?? 0,
+    },
+  )
+
+  return c.json(data.entityAnalytics as z.infer<typeof RankingsResponseSchema>, 200)
+})
+
+// ── GET /aggregated ──
+
+const aggregatedRoute = createRoute({
+  method: 'get',
+  path: '/aggregated',
+  operationId: 'getAggregatedLineItems',
+  tags: ['Analytics'],
+  summary: 'Get budget data aggregated by functional/economic classification',
+  description: 'Returns budget amounts aggregated by functional and economic classification codes. Useful for "how much is spent on education nationally" type queries.',
+  request: {
+    query: z.object({
+      year: z.string().optional().openapi({ description: 'Budget year. Default: previous year.', example: '2025' }),
+      account_category: z.enum(['ch', 'vn']).optional().default('ch'),
+      report_type: z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED']).optional().default('PRINCIPAL_AGGREGATED'),
+      normalization: z.enum(['total', 'per_capita']).optional().default('total'),
+      currency: z.enum(['RON', 'EUR']).optional().default('RON'),
+      inflation_adjusted: z.coerce.boolean().optional().default(false),
+      entity_cuis: z.string().optional().openapi({ description: 'Comma-separated entity CUIs to filter' }),
+      county_codes: z.string().optional().openapi({ description: 'Comma-separated county codes' }),
+      functional_prefixes: z.string().optional().openapi({ description: 'Comma-separated functional prefixes' }),
+      limit: z.coerce.number().int().min(1).max(1000).optional().default(500),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: AggregatedLineItemsResponseSchema } },
+      description: 'Aggregated budget data by classification.',
+    },
+  },
+})
+
+app.openapi(aggregatedRoute, async (c) => {
+  const q = c.req.valid('query')
+  const year = q.year ?? String(new Date().getFullYear() - 1)
+
+  const filter: Record<string, unknown> = {
+    report_period: buildReportPeriod(year, 'YEAR'),
+    account_category: q.account_category ?? 'ch',
+    report_type: q.report_type ?? 'PRINCIPAL_AGGREGATED',
+    normalization: q.normalization ?? 'total',
+    currency: q.currency ?? 'RON',
+    inflation_adjusted: q.inflation_adjusted ?? false,
+    exclude: { economic_prefixes: ['51.01', '51.02'] },
+  }
+
+  if (q.entity_cuis) filter.entity_cuis = q.entity_cuis.split(',').map((s) => s.trim())
+  if (q.county_codes) filter.county_codes = q.county_codes.split(',').map((s) => s.trim())
+  if (q.functional_prefixes) filter.functional_prefixes = q.functional_prefixes.split(',').map((s) => s.trim())
+
+  const data = await gql<{ aggregatedLineItems: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    AGGREGATED_LINE_ITEMS_QUERY,
+    { filter, limit: q.limit ?? 500, offset: q.offset ?? 0 },
+  )
+
+  return c.json(data.aggregatedLineItems as z.infer<typeof AggregatedLineItemsResponseSchema>, 200)
+})
+
+// ── GET /line-items ──
+
+const lineItemsRoute = createRoute({
+  method: 'get',
+  path: '/line-items',
+  operationId: 'getExecutionLineItems',
+  tags: ['Analytics'],
+  summary: 'Search individual budget execution line items',
+  description: 'Query individual budget execution line items across all entities. Useful for finding specific spending items by classification code.',
+  request: {
+    query: z.object({
+      year: z.string().optional().openapi({ description: 'Budget year. Default: previous year.', example: '2025' }),
+      account_category: z.enum(['ch', 'vn']).optional().default('ch'),
+      report_type: z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED']).optional().default('PRINCIPAL_AGGREGATED'),
+      normalization: z.enum(['total', 'per_capita']).optional().default('total'),
+      currency: z.enum(['RON', 'EUR']).optional().default('RON'),
+      entity_cuis: z.string().optional().openapi({ description: 'Comma-separated entity CUIs' }),
+      functional_prefixes: z.string().optional().openapi({ description: 'Comma-separated functional prefixes' }),
+      economic_prefixes: z.string().optional().openapi({ description: 'Comma-separated economic prefixes' }),
+      sort_by: z.enum(['amount', 'year']).optional().default('amount'),
+      sort_order: z.enum(['ASC', 'DESC']).optional().default('DESC'),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(100),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: LineItemsResponseSchema } },
+      description: 'Individual execution line items.',
+    },
+  },
+})
+
+app.openapi(lineItemsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const year = q.year ?? String(new Date().getFullYear() - 1)
+
+  const filter: Record<string, unknown> = {
+    report_period: buildReportPeriod(year, 'YEAR'),
+    account_category: q.account_category ?? 'ch',
+    report_type: q.report_type ?? 'PRINCIPAL_AGGREGATED',
+    normalization: q.normalization ?? 'total',
+    currency: q.currency ?? 'RON',
+  }
+
+  if (q.entity_cuis) filter.entity_cuis = q.entity_cuis.split(',').map((s) => s.trim())
+  if (q.functional_prefixes) filter.functional_prefixes = q.functional_prefixes.split(',').map((s) => s.trim())
+  if (q.economic_prefixes) filter.economic_prefixes = q.economic_prefixes.split(',').map((s) => s.trim())
+
+  const data = await gql<{ executionLineItems: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    EXECUTION_LINE_ITEMS_QUERY,
+    {
+      filter,
+      sort: { by: q.sort_by ?? 'amount', order: q.sort_order ?? 'DESC' },
+      limit: q.limit ?? 100,
+      offset: q.offset ?? 0,
+    },
+  )
+
+  return c.json(data.executionLineItems as z.infer<typeof LineItemsResponseSchema>, 200)
+})
+
+// ── GET /commitments/line-items ──
+
+const commitmentsLineItemsRoute = createRoute({
+  method: 'get',
+  path: '/commitments/line-items',
+  operationId: 'getCommitmentsLineItems',
+  tags: ['Commitments'],
+  summary: 'Get detailed commitment line items for an entity',
+  description: 'Returns detailed commitment line items showing budget credits, commitments, payments, and receptions at the individual line item level.',
+  request: {
+    query: z.object({
+      entity_cuis: z.string().openapi({ description: 'Comma-separated entity CUIs (required)', example: '2845710' }),
+      year: z.string().optional().openapi({ description: 'Budget year. Default: previous year.', example: '2025' }),
+      period_type: z.enum(['YEAR', 'QUARTER', 'MONTH']).optional().default('YEAR'),
+      report_type: z.enum(['PRINCIPAL_AGGREGATED', 'SECONDARY_AGGREGATED', 'DETAILED']).optional().default('PRINCIPAL_AGGREGATED'),
+      normalization: z.enum(['total', 'per_capita']).optional().default('total'),
+      currency: z.enum(['RON', 'EUR']).optional().default('RON'),
+      inflation_adjusted: z.coerce.boolean().optional().default(false),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(50),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: CommitmentsLineItemsResponseSchema } },
+      description: 'Detailed commitment line items.',
+    },
+  },
+})
+
+app.openapi(commitmentsLineItemsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const year = q.year ?? String(new Date().getFullYear() - 1)
+
+  const filter = {
+    report_period: buildReportPeriod(year, q.period_type ?? 'YEAR'),
+    report_type: q.report_type ?? 'PRINCIPAL_AGGREGATED',
+    entity_cuis: q.entity_cuis.split(',').map((s) => s.trim()),
+    normalization: q.normalization ?? 'total',
+    currency: q.currency ?? 'RON',
+    inflation_adjusted: q.inflation_adjusted ?? false,
+    exclude_transfers: true,
+  }
+
+  const data = await gql<{ commitmentsLineItems: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    COMMITMENTS_LINE_ITEMS_QUERY,
+    { filter, limit: q.limit ?? 50, offset: q.offset ?? 0 },
+  )
+
+  return c.json(data.commitmentsLineItems as z.infer<typeof CommitmentsLineItemsResponseSchema>, 200)
+})
+
+// ── GET /classifications ──
+
+const classificationsRoute = createRoute({
+  method: 'get',
+  path: '/classifications',
+  operationId: 'getClassifications',
+  tags: ['Reference Data'],
+  summary: 'Get budget classification codes and names',
+  description: 'Returns functional classifications (budget categories like education, health, defense), economic classifications (spending types like salaries, goods, transfers), budget sectors, and funding sources.',
+  request: {
+    query: z.object({
+      type: z.enum(['functional', 'economic', 'budget_sectors', 'funding_sources', 'all']).optional().default('all').openapi({
+        description: 'Which classification type to return. Default: all.',
+      }),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: ClassificationsResponseSchema } },
+      description: 'Classification reference data.',
+    },
+  },
+})
+
+app.openapi(classificationsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const type = q.type ?? 'all'
+  const result: Record<string, unknown> = {}
+
+  const promises: Promise<void>[] = []
+
+  if (type === 'all' || type === 'functional') {
+    promises.push(
+      gql<{ functionalClassifications: { nodes: { code: string; name: string }[] } }>(
+        ALL_FUNCTIONAL_CLASSIFICATIONS_QUERY,
+      ).then((data) => {
+        result.functional = data.functionalClassifications.nodes
+      }).catch(() => { result.functional = [] }),
+    )
+  }
+
+  if (type === 'all' || type === 'economic') {
+    promises.push(
+      gql<{ economicClassifications: { nodes: { code: string; name: string }[] } }>(
+        ALL_ECONOMIC_CLASSIFICATIONS_QUERY,
+      ).then((data) => {
+        result.economic = data.economicClassifications.nodes
+      }).catch(() => { result.economic = [] }),
+    )
+  }
+
+  if (type === 'all' || type === 'budget_sectors') {
+    promises.push(
+      gql<{ budgetSectors: { nodes: Record<string, unknown>[] } }>(
+        BUDGET_SECTORS_QUERY,
+      ).then((data) => {
+        result.budget_sectors = data.budgetSectors.nodes
+      }).catch(() => { result.budget_sectors = [] }),
+    )
+  }
+
+  if (type === 'all' || type === 'funding_sources') {
+    promises.push(
+      gql<{ fundingSources: { nodes: Record<string, unknown>[] } }>(
+        FUNDING_SOURCES_QUERY,
+      ).then((data) => {
+        result.funding_sources = data.fundingSources.nodes
+      }).catch(() => { result.funding_sources = [] }),
+    )
+  }
+
+  await Promise.all(promises)
+  return c.json(result as z.infer<typeof ClassificationsResponseSchema>, 200)
+})
+
+// ── GET /ins/contexts ──
+
+const insContextsRoute = createRoute({
+  method: 'get',
+  path: '/ins/contexts',
+  operationId: 'getInsContexts',
+  tags: ['INS Statistics'],
+  summary: 'Browse INS (National Statistics Institute) context hierarchy',
+  description: 'Returns the hierarchical context tree for INS statistical datasets. Contexts organize datasets by topic (e.g., Population, Economy, Education).',
+  request: {
+    query: z.object({
+      search: z.string().optional().openapi({ description: 'Search term' }),
+      level: z.coerce.number().int().optional().openapi({ description: 'Filter by hierarchy level' }),
+      parent_code: z.string().optional().openapi({ description: 'Filter by parent context code' }),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(200),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: InsContextsResponseSchema } },
+      description: 'INS context hierarchy.',
+    },
+  },
+})
+
+app.openapi(insContextsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const filter: Record<string, unknown> = {}
+  if (q.search) filter.search = q.search
+  if (q.level !== undefined) filter.level = q.level
+  if (q.parent_code) filter.parentCode = q.parent_code
+
+  const data = await gql<{ insContexts: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    INS_CONTEXTS_QUERY,
+    { filter, limit: q.limit ?? 200, offset: q.offset ?? 0 },
+  )
+
+  return c.json(data.insContexts as z.infer<typeof InsContextsResponseSchema>, 200)
+})
+
+// ── GET /ins/datasets ──
+
+const insDatasetsRoute = createRoute({
+  method: 'get',
+  path: '/ins/datasets',
+  operationId: 'getInsDatasets',
+  tags: ['INS Statistics'],
+  summary: 'Search INS statistical datasets',
+  description: 'Browse and search available INS datasets. Filter by topic context, data availability (UAT/county level), and periodicity.',
+  request: {
+    query: z.object({
+      search: z.string().optional().openapi({ description: 'Search term for dataset name/description' }),
+      context_code: z.string().optional().openapi({ description: 'Filter by context code (topic)' }),
+      has_uat_data: z.coerce.boolean().optional().openapi({ description: 'Only datasets with UAT-level (municipality) data' }),
+      has_county_data: z.coerce.boolean().optional().openapi({ description: 'Only datasets with county-level data' }),
+      codes: z.string().optional().openapi({ description: 'Comma-separated dataset codes to fetch specific datasets' }),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(50),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: InsDatasetsResponseSchema } },
+      description: 'INS dataset catalog.',
+    },
+  },
+})
+
+app.openapi(insDatasetsRoute, async (c) => {
+  const q = c.req.valid('query')
+  const filter: Record<string, unknown> = {}
+  if (q.search) filter.search = q.search
+  if (q.context_code) filter.contextCode = q.context_code
+  if (q.has_uat_data !== undefined) filter.hasUatData = q.has_uat_data
+  if (q.has_county_data !== undefined) filter.hasCountyData = q.has_county_data
+  if (q.codes) filter.codes = q.codes.split(',').map((s) => s.trim())
+
+  const data = await gql<{ insDatasets: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    INS_DATASETS_QUERY,
+    { filter, limit: q.limit ?? 50, offset: q.offset ?? 0 },
+  )
+
+  return c.json(data.insDatasets as z.infer<typeof InsDatasetsResponseSchema>, 200)
+})
+
+// ── GET /ins/datasets/{code} ──
+
+const insDatasetDetailsRoute = createRoute({
+  method: 'get',
+  path: '/ins/datasets/{code}',
+  operationId: 'getInsDatasetDetails',
+  tags: ['INS Statistics'],
+  summary: 'Get details and dimensions for an INS dataset',
+  description: 'Returns full details about an INS dataset including its dimensions (time, territory, classifications, units). Use this to understand what filters are available before querying observations.',
+  request: {
+    params: z.object({
+      code: z.string().openapi({ description: 'Dataset code (e.g. POP107D)', example: 'POP107D' }),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: InsDatasetDetailsSchema } },
+      description: 'Dataset details with dimensions.',
+    },
+  },
+})
+
+app.openapi(insDatasetDetailsRoute, async (c) => {
+  const { code } = c.req.valid('param')
+
+  const data = await gql<{ insDataset: Record<string, unknown> | null }>(
+    INS_DATASET_DETAILS_QUERY,
+    { code },
+  )
+
+  if (!data.insDataset) {
+    return c.json({ error: `Dataset ${code} not found` } as unknown as z.infer<typeof InsDatasetDetailsSchema>, 404 as unknown as 200)
+  }
+
+  return c.json(data.insDataset as z.infer<typeof InsDatasetDetailsSchema>, 200)
+})
+
+// ── GET /ins/observations/{datasetCode} ──
+
+const insObservationsRoute = createRoute({
+  method: 'get',
+  path: '/ins/observations/{datasetCode}',
+  operationId: 'getInsObservations',
+  tags: ['INS Statistics'],
+  summary: 'Query INS statistical observations for a dataset',
+  description: 'Returns observation data for a specific INS dataset. Filter by territory (SIRUTA codes), time period, and territory level (NATIONAL, NUTS1, NUTS2, NUTS3, LAU).',
+  request: {
+    params: z.object({
+      datasetCode: z.string().openapi({ description: 'Dataset code (e.g. POP107D)', example: 'POP107D' }),
+    }),
+    query: z.object({
+      siruta_codes: z.string().optional().openapi({ description: 'Comma-separated SIRUTA codes for territory filtering', example: '130981' }),
+      territory_codes: z.string().optional().openapi({ description: 'Comma-separated territory codes (e.g. county codes like "CJ")' }),
+      territory_levels: z.string().optional().openapi({ description: 'Comma-separated territory levels: NATIONAL, NUTS1, NUTS2, NUTS3, LAU', example: 'LAU' }),
+      year_start: z.string().optional().openapi({ description: 'Start year for period filter', example: '2020' }),
+      year_end: z.string().optional().openapi({ description: 'End year for period filter', example: '2025' }),
+      limit: z.coerce.number().int().min(1).max(1000).optional().default(200),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: InsObservationsResponseSchema } },
+      description: 'INS observation data.',
+    },
+  },
+})
+
+app.openapi(insObservationsRoute, async (c) => {
+  const { datasetCode } = c.req.valid('param')
+  const q = c.req.valid('query')
+
+  const filter: Record<string, unknown> = {}
+  if (q.siruta_codes) filter.sirutaCodes = q.siruta_codes.split(',').map((s) => s.trim())
+  if (q.territory_codes) filter.territoryCodes = q.territory_codes.split(',').map((s) => s.trim())
+  if (q.territory_levels) filter.territoryLevels = q.territory_levels.split(',').map((s) => s.trim())
+  if (q.year_start || q.year_end) {
+    filter.period = {
+      type: 'YEAR',
+      selection: {
+        interval: {
+          start: q.year_start ?? '1900',
+          end: q.year_end ?? '2100',
+        },
+      },
+    }
+  }
+
+  const data = await gql<{ insObservations: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    INS_OBSERVATIONS_QUERY,
+    { datasetCode, filter, limit: q.limit ?? 200, offset: q.offset ?? 0 },
+  )
+
+  return c.json(data.insObservations as z.infer<typeof InsObservationsResponseSchema>, 200)
+})
+
+// ── GET /ins/datasets/{code}/dimensions/{index}/values ──
+
+const insDimensionValuesRoute = createRoute({
+  method: 'get',
+  path: '/ins/datasets/{code}/dimensions/{index}/values',
+  operationId: 'getInsDimensionValues',
+  tags: ['INS Statistics'],
+  summary: 'Get available values for an INS dataset dimension',
+  description: 'Returns the available values for a specific dimension of an INS dataset. Use this to discover what territory, time period, classification, or unit options are available.',
+  request: {
+    params: z.object({
+      code: z.string().openapi({ description: 'Dataset code', example: 'POP107D' }),
+      index: z.coerce.number().int().openapi({ description: 'Dimension index (0-based)', example: 0 }),
+    }),
+    query: z.object({
+      search: z.string().optional().openapi({ description: 'Search term to filter values' }),
+      limit: z.coerce.number().int().min(1).max(500).optional().default(50),
+      offset: z.coerce.number().int().min(0).optional().default(0),
+    }),
+  },
+  responses: {
+    200: {
+      content: { 'application/json': { schema: InsDimensionValuesResponseSchema } },
+      description: 'Dimension values.',
+    },
+  },
+})
+
+app.openapi(insDimensionValuesRoute, async (c) => {
+  const { code, index } = c.req.valid('param')
+  const q = c.req.valid('query')
+
+  const data = await gql<{ insDatasetDimensionValues: { nodes: Record<string, unknown>[]; pageInfo: Record<string, unknown> } }>(
+    INS_DATASET_DIMENSION_VALUES_QUERY,
+    {
+      datasetCode: code,
+      dimensionIndex: index,
+      search: q.search ?? '',
+      limit: q.limit ?? 50,
+      offset: q.offset ?? 0,
+    },
+  )
+
+  return c.json(data.insDatasetDimensionValues as z.infer<typeof InsDimensionValuesResponseSchema>, 200)
 })
 
 export default app

@@ -26,13 +26,24 @@ app.doc31('/openapi.json', (c) => ({
   openapi: '3.1.0',
   info: {
     title: 'Transparenta.eu Public Budget API',
-    version: '2.0.0',
+    version: '3.0.0',
     description: `REST API for querying Romanian public budget data from Transparenta.eu.
 
 **Endpoints:**
 1. **GET /search** — Find public entities by name or type. Returns CUI identifiers.
 2. **GET /entities/{cui}** — Get comprehensive budget data for an entity: financials, trends, line items, reports, commitments, and more.
 3. **GET /heatmap** — Get per-capita spending data for all UATs (municipalities/communes) across Romania.
+4. **GET /heatmap/counties** — Get per-capita spending data aggregated by county.
+5. **GET /rankings** — Rank entities by budget spending or income with filtering.
+6. **GET /aggregated** — Budget data aggregated by functional/economic classification.
+7. **GET /line-items** — Search individual budget execution line items.
+8. **GET /commitments/line-items** — Detailed commitment line items for entities.
+9. **GET /classifications** — Reference data: functional, economic, budget sectors, funding sources.
+10. **GET /ins/contexts** — Browse INS (National Statistics Institute) context hierarchy.
+11. **GET /ins/datasets** — Search INS statistical datasets.
+12. **GET /ins/datasets/{code}** — Get dataset details with dimensions.
+13. **GET /ins/observations/{datasetCode}** — Query INS statistical observations.
+14. **GET /ins/datasets/{code}/dimensions/{index}/values** — Get available dimension values.
 
 All amounts are in RON unless you specify currency=EUR or normalization=per_capita. Data is sourced from official public budget execution reports submitted by Romanian public entities.`,
   },

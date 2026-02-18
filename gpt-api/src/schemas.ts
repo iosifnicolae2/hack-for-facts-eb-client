@@ -136,6 +136,21 @@ export const ExecutionLineItemSchema = z.object({
   monthly_amount: z.number().openapi({ description: 'Monthly amount in RON' }),
 }).openapi('ExecutionLineItem')
 
+// ── Standalone Execution Line Item (data discovery) ──
+
+export const StandaloneExecutionLineItemSchema = z.object({
+  line_item_id: z.string(),
+  report_id: z.string().nullable().optional(),
+  functional_code: z.string().nullable().optional(),
+  economic_code: z.string().nullable().optional(),
+  amount: z.number(),
+  year: z.number().nullable().optional(),
+  account_category: z.string().nullable().optional(),
+  entity: EntityRefSchema.nullable().optional(),
+  functionalClassification: z.object({ functional_name: z.string() }).nullable().optional(),
+  economicClassification: z.object({ economic_name: z.string() }).nullable().optional(),
+}).openapi('StandaloneExecutionLineItem')
+
 // ── Report ──
 
 export const ReportSchema = z.object({
@@ -187,6 +202,47 @@ export const CommitmentsSummarySchema = z.object({
   commitment_rate: z.number().nullable().optional().openapi({ description: 'Commitment rate (0-1)', example: 0.92 }),
 }).openapi('CommitmentsSummary')
 
+// ── Commitments Line Item ──
+
+export const CommitmentsLineItemSchema = z.object({
+  id: z.string(),
+  year: z.number(),
+  month: z.number().nullable().optional(),
+  report_type: z.string().nullable().optional(),
+  entity_cui: z.string().nullable().optional(),
+  entity_name: z.string().nullable().optional(),
+  budget_sector_id: z.string().nullable().optional(),
+  budget_sector_name: z.string().nullable().optional(),
+  funding_source_id: z.string().nullable().optional(),
+  funding_source_name: z.string().nullable().optional(),
+  functional_code: z.string().nullable().optional(),
+  functional_name: z.string().nullable().optional(),
+  economic_code: z.string().nullable().optional(),
+  economic_name: z.string().nullable().optional(),
+  credite_angajament: z.number().nullable().optional(),
+  limita_credit_angajament: z.number().nullable().optional(),
+  credite_bugetare: z.number().nullable().optional(),
+  credite_angajament_initiale: z.number().nullable().optional(),
+  credite_bugetare_initiale: z.number().nullable().optional(),
+  credite_angajament_definitive: z.number().nullable().optional(),
+  credite_bugetare_definitive: z.number().nullable().optional(),
+  credite_angajament_disponibile: z.number().nullable().optional(),
+  credite_bugetare_disponibile: z.number().nullable().optional(),
+  receptii_totale: z.number().nullable().optional(),
+  plati_trezor: z.number().nullable().optional(),
+  plati_non_trezor: z.number().nullable().optional(),
+  receptii_neplatite: z.number().nullable().optional(),
+  monthly_plati_trezor: z.number().nullable().optional(),
+  monthly_plati_non_trezor: z.number().nullable().optional(),
+  monthly_receptii_totale: z.number().nullable().optional(),
+  monthly_receptii_neplatite_change: z.number().nullable().optional(),
+  monthly_credite_angajament: z.number().nullable().optional(),
+  is_quarterly: z.boolean().nullable().optional(),
+  quarter: z.number().nullable().optional(),
+  is_yearly: z.boolean().nullable().optional(),
+  anomaly: z.string().nullable().optional(),
+}).openapi('CommitmentsLineItem')
+
 // ── Commitments Aggregated ──
 
 export const CommitmentsAggregatedItemSchema = z.object({
@@ -236,6 +292,50 @@ export const HeatmapUATSchema = z.object({
   per_capita_amount: z.number().nullable().optional(),
 }).openapi('HeatmapUAT')
 
+// ── Heatmap County ──
+
+export const HeatmapCountySchema = z.object({
+  county_code: z.string().nullable().optional(),
+  county_name: z.string().nullable().optional(),
+  county_population: z.number().nullable().optional(),
+  total_amount: z.number().nullable().optional(),
+  per_capita_amount: z.number().nullable().optional(),
+  county_entity: EntityRefSchema.nullable().optional(),
+}).openapi('HeatmapCounty')
+
+// ── Entity Analytics (rankings) ──
+
+export const EntityAnalyticsItemSchema = z.object({
+  entity_cui: z.string(),
+  entity_name: z.string(),
+  entity_type: z.string().nullable().optional(),
+  uat_id: z.string().nullable().optional(),
+  county_code: z.string().nullable().optional(),
+  county_name: z.string().nullable().optional(),
+  population: z.number().nullable().optional(),
+  amount: z.number().nullable().optional(),
+  total_amount: z.number().nullable().optional(),
+  per_capita_amount: z.number().nullable().optional(),
+}).openapi('EntityAnalyticsItem')
+
+// ── Aggregated Line Item ──
+
+export const AggregatedLineItemSchema = z.object({
+  functional_code: z.string().nullable().optional(),
+  functional_name: z.string().nullable().optional(),
+  economic_code: z.string().nullable().optional(),
+  economic_name: z.string().nullable().optional(),
+  amount: z.number(),
+  count: z.number(),
+}).openapi('AggregatedLineItem')
+
+// ── Classification ──
+
+export const ClassificationSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+}).openapi('Classification')
+
 // ── INS Observation ──
 
 export const InsObservationSchema = z.object({
@@ -271,6 +371,111 @@ export const InsObservationSchema = z.object({
     sort_order: z.number().nullable().optional(),
   })).nullable().optional(),
 }).openapi('InsObservation')
+
+// ── INS Context ──
+
+export const InsContextSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  name_ro: z.string(),
+  name_en: z.string().nullable().optional(),
+  name_ro_markdown: z.string().nullable().optional(),
+  name_en_markdown: z.string().nullable().optional(),
+  level: z.number(),
+  parent_id: z.number().nullable().optional(),
+  parent_code: z.string().nullable().optional(),
+  path: z.string().nullable().optional(),
+  matrix_count: z.number().nullable().optional(),
+}).openapi('InsContext')
+
+// ── INS Dataset ──
+
+export const InsDatasetSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  name_ro: z.string(),
+  name_en: z.string().nullable().optional(),
+  definition_ro: z.string().nullable().optional(),
+  definition_en: z.string().nullable().optional(),
+  periodicity: z.any().nullable().optional(),
+  year_range: z.array(z.number()).nullable().optional(),
+  dimension_count: z.number().nullable().optional(),
+  has_uat_data: z.boolean().nullable().optional(),
+  has_county_data: z.boolean().nullable().optional(),
+  has_siruta: z.boolean().nullable().optional(),
+  sync_status: z.string().nullable().optional(),
+  last_sync_at: z.string().nullable().optional(),
+  context_code: z.string().nullable().optional(),
+  context_name_ro: z.string().nullable().optional(),
+  context_name_en: z.string().nullable().optional(),
+  context_path: z.string().nullable().optional(),
+  metadata: z.any().nullable().optional(),
+}).openapi('InsDataset')
+
+// ── INS Dataset Details (with dimensions) ──
+
+export const InsDatasetDimensionSchema = z.object({
+  index: z.number(),
+  type: z.string(),
+  label_ro: z.string(),
+  label_en: z.string().nullable().optional(),
+  is_hierarchical: z.boolean().nullable().optional(),
+  option_count: z.number().nullable().optional(),
+  classification_type: z.object({
+    code: z.string(),
+    name_ro: z.string(),
+    name_en: z.string().nullable().optional(),
+    is_hierarchical: z.boolean().nullable().optional(),
+  }).nullable().optional(),
+}).openapi('InsDatasetDimension')
+
+export const InsDatasetDetailsSchema = InsDatasetSchema.extend({
+  dimensions: z.array(InsDatasetDimensionSchema).nullable().optional(),
+}).openapi('InsDatasetDetails')
+
+// ── INS Dimension Value ──
+
+export const InsDimensionValueSchema = z.object({
+  nom_item_id: z.number().nullable().optional(),
+  dimension_type: z.string().nullable().optional(),
+  label_ro: z.string().nullable().optional(),
+  label_en: z.string().nullable().optional(),
+  parent_nom_item_id: z.number().nullable().optional(),
+  offset_order: z.number().nullable().optional(),
+  territory: z.object({
+    code: z.string().nullable().optional(),
+    siruta_code: z.string().nullable().optional(),
+    level: z.string().nullable().optional(),
+    name_ro: z.string().nullable().optional(),
+  }).nullable().optional(),
+  time_period: z.object({
+    iso_period: z.string().nullable().optional(),
+    year: z.number().nullable().optional(),
+    quarter: z.number().nullable().optional(),
+    month: z.number().nullable().optional(),
+    periodicity: z.string().nullable().optional(),
+  }).nullable().optional(),
+  classification_value: z.object({
+    type_code: z.string().nullable().optional(),
+    code: z.string().nullable().optional(),
+    name_ro: z.string().nullable().optional(),
+  }).nullable().optional(),
+  unit: z.object({
+    code: z.string().nullable().optional(),
+    symbol: z.string().nullable().optional(),
+    name_ro: z.string().nullable().optional(),
+  }).nullable().optional(),
+}).openapi('InsDimensionValue')
+
+// ── INS Latest Dataset Value ──
+
+export const InsLatestDatasetValueSchema = z.object({
+  latestPeriod: z.string().nullable().optional(),
+  matchStrategy: z.string().nullable().optional(),
+  hasData: z.boolean().nullable().optional(),
+  dataset: InsDatasetSchema.nullable().optional(),
+  observation: InsObservationSchema.nullable().optional(),
+}).openapi('InsLatestDatasetValue')
 
 // ── Full Entity Data Response ──
 
@@ -364,3 +569,74 @@ export type EntityDataResponse = z.infer<typeof EntityDataResponseSchema>
 export const HeatmapResponseSchema = z.object({
   data: z.array(HeatmapUATSchema),
 }).openapi('HeatmapResponse')
+
+// ── Heatmap County Response ──
+
+export const HeatmapCountyResponseSchema = z.object({
+  data: z.array(HeatmapCountySchema),
+}).openapi('HeatmapCountyResponse')
+
+// ── Rankings Response ──
+
+export const RankingsResponseSchema = z.object({
+  nodes: z.array(EntityAnalyticsItemSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('RankingsResponse')
+
+// ── Aggregated Line Items Response ──
+
+export const AggregatedLineItemsResponseSchema = z.object({
+  nodes: z.array(AggregatedLineItemSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('AggregatedLineItemsResponse')
+
+// ── Line Items Response ──
+
+export const LineItemsResponseSchema = z.object({
+  nodes: z.array(StandaloneExecutionLineItemSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('LineItemsResponse')
+
+// ── Commitments Line Items Response ──
+
+export const CommitmentsLineItemsResponseSchema = z.object({
+  nodes: z.array(CommitmentsLineItemSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('CommitmentsLineItemsResponse')
+
+// ── Classifications Response ──
+
+export const ClassificationsResponseSchema = z.object({
+  functional: z.array(ClassificationSchema).optional(),
+  economic: z.array(ClassificationSchema).optional(),
+  budget_sectors: z.array(FundingSourceSchema).optional(),
+  funding_sources: z.array(FundingSourceSchema).optional(),
+}).openapi('ClassificationsResponse')
+
+// ── INS Contexts Response ──
+
+export const InsContextsResponseSchema = z.object({
+  nodes: z.array(InsContextSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('InsContextsResponse')
+
+// ── INS Datasets Response ──
+
+export const InsDatasetsResponseSchema = z.object({
+  nodes: z.array(InsDatasetSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('InsDatasetsResponse')
+
+// ── INS Observations Response ──
+
+export const InsObservationsResponseSchema = z.object({
+  nodes: z.array(InsObservationSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('InsObservationsResponse')
+
+// ── INS Dimension Values Response ──
+
+export const InsDimensionValuesResponseSchema = z.object({
+  nodes: z.array(InsDimensionValueSchema),
+  pageInfo: PageInfoSchema,
+}).openapi('InsDimensionValuesResponse')
