@@ -7,6 +7,13 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 API_BASE_URL = "https://transparenta-eu-api.bunnytech.app"
 
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
 [[routes]]
 pattern = "transparenta-eu-api.bunnytech.app"
 custom_domain = true
